@@ -59,7 +59,7 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
-If you have any questions or feedback, feel free to reach out to the project maintainer at [alfredfavour76@gmail.com](alfredfavour76@gmail.com).
+If you have any questions or need to get in touch, feel free to [Email Me](mailto:alfredfavour76@gmail.com).
 
 ---
 
