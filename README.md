@@ -2,7 +2,7 @@
 
 ![Add to Cart](https://github.com/freddyfavour/Add-to-cart/blob/main/add-to-cart.png?raw=true)
 
-Add to Cart is a web application that simulates an online shopping experience where users can add items to their cart and view the total cost. The app is hosted on Vercel and built with HTML, CSS, and JavaScript.
+Add to Cart is a web application that helps to store items that you wish to store so you can't forget to buy something when next you go grocery shopping. The app is hosted on Vercel and built with HTML, CSS, and JavaScript.
 
 ## Table of Contents
 - [Features](#features)
