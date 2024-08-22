@@ -1,8 +1,8 @@
-# Add to Cart
+# CATTY
 
 ![Add to Cart](https://github.com/freddyfavour/Add-to-cart/blob/main/add-to-cart.png?raw=true)
 
-Add to Cart is a web application that helps to store items that you wish to store so you can't forget to buy something when next you go grocery shopping. The app is hosted on Vercel and built with HTML, CSS, and JavaScript.
+Catty is a web application that helps to store items that you wish to store so you can't forget to buy something when next you go grocery shopping. The app is hosted on Vercel and built with HTML, CSS, and JavaScript.
 
 ## Table of Contents
 - [Features](#features)
@@ -27,11 +27,11 @@ Add to Cart is a web application that helps to store items that you wish to stor
 ### Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/freddyfavour/Add-to-cart.git
+   git clone https://github.com/freddyfavour/Catty.git
    ```
 2. Navigate to the project directory:
    ```sh
-   cd Add-to-cart
+   cd Catty
    ```
 
 ## Usage
