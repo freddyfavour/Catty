@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js";
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getDatabase, ref, push, onValue, remove } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA5ya8yk-RrMj1sjv4MlZxIX-xsZSKABWI",
@@ -12,15 +12,15 @@ const firebaseConfig = {
   measurementId: "G-RGXYW94XNL"
 };
 
+
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
 const database = getDatabase(app);
-const shoppingListInDB = ref(database, "shoppingList");
 
 const inputFieldEl = document.getElementById("input-field");
 const addButtonEl = document.getElementById("add-button");
 const shoppingListEl = document.getElementById("shopping-list");
+const shoppingListInDB = ref(database, "shoppingList");
 
 addButtonEl.addEventListener("click", function() {
   let inputValue = inputFieldEl.value;
@@ -31,10 +31,11 @@ addButtonEl.addEventListener("click", function() {
   }
 });
 
+// Listen for changes in the database and update UI
 onValue(shoppingListInDB, function(snapshot) {
+  clearShoppingListEl();
   if (snapshot.exists()) {
     let itemsArray = Object.entries(snapshot.val());
-    clearShoppingListEl();
     
     itemsArray.forEach(item => {
       appendItemToShoppingListEl(item);
@@ -44,6 +45,7 @@ onValue(shoppingListInDB, function(snapshot) {
   }
 });
 
+// Helper functions to manage UI
 function clearShoppingListEl() {
   shoppingListEl.innerHTML = "";
 }
@@ -59,6 +61,7 @@ function appendItemToShoppingListEl(item) {
   let newEl = document.createElement("li");
   newEl.textContent = itemValue;
   
+  // Set up click listener for deletion
   newEl.addEventListener("click", function() {
     let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`);
     remove(exactLocationOfItemInDB);
@@ -67,6 +70,7 @@ function appendItemToShoppingListEl(item) {
   shoppingListEl.append(newEl);
 }
 
+// Register service worker if supported
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     navigator.serviceWorker.register("/service-worker.js").then(
@@ -79,4 +83,3 @@ if ("serviceWorker" in navigator) {
     );
   });
 }
-
