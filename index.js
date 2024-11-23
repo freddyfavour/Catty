@@ -1,5 +1,4 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js";
 import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -14,7 +13,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const database = getDatabase(app);
 
 const inputFieldEl = document.getElementById("input-field");
@@ -24,10 +22,10 @@ const shoppingListInDB = ref(database, "shoppingList");
 
 addButtonEl.addEventListener("click", () => {
   const inputValue = inputFieldEl.value.trim();
-  
+
   if (inputValue) {
     push(shoppingListInDB, inputValue)
-      .then(clearInputFieldEl)
+      .then(() => clearInputFieldEl())
       .catch(error => console.error("Error adding item:", error));
   }
 });
@@ -52,17 +50,17 @@ function clearInputFieldEl() {
 
 function appendItemToShoppingListEl(item) {
   const [itemID, itemValue] = item;
-  
+
   const newEl = document.createElement("li");
   newEl.textContent = itemValue;
   newEl.className = "shopping-item";
-  
+
   newEl.addEventListener("click", () => {
     const itemRef = ref(database, `shoppingList/${itemID}`);
     remove(itemRef)
       .catch(error => console.error("Error removing item:", error));
   });
-  
+
   shoppingListEl.appendChild(newEl);
 }
 
@@ -73,3 +71,46 @@ if ("serviceWorker" in navigator) {
       .catch(error => console.log("Service Worker registration failed:", error));
   });
 }
+
+const CACHE_NAME = 'shopping-list-cache-v1';
+const FILES_TO_CACHE = [
+  '/',
+  '/index.html',
+  '/index.css',
+  '/index.js',
+  '/cat.png',
+  '/apple-touch-icon.png',
+  '/favicon-32x32.png',
+  '/favicon-16x16.png',
+  'https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap',
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(FILES_TO_CACHE))
+      .catch(error => console.error("Error caching files:", error))
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+      .catch(() => caches.match('/index.html'))
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
